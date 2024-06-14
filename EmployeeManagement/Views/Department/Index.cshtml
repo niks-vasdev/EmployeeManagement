@@ -1,0 +1,140 @@
+﻿
+<div class="container-fluid parent card shadow mt-3">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="heading">Departments</h2>
+            <button type="button" class="btn btn-primary" onclick="OpenAddDepartmentModal();">
+                <i class="fas fa-plus"></i> Add Department
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table id="departmentTable" class="display" style="min-width:1130px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Modal For Add Department -->
+<form id="addDepartmentForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="add-department-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Add New Department</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+
+                    <label class="col-sm-3 col-form-label" for="DepartmentNameAdd">Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="DepartmentNameAdd" required>
+                        <div class="invalid-feedback">Please Provide Name </div>
+                    </div>
+
+
+                    <label class="col-sm-3 col-form-label" for="DepartmentDescriptionAdd">Description</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="DepartmentDescriptionAdd" required>
+                        <div class="invalid-feedback">Please Provide Description </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="AddDepartmentSubmit">Submit</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!--  Modal For Update Department-->
+<form id="updateDepartmentForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="update-department-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Update Department</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+                    <input type="text" class="form-control" id="DepartmentUpdateId" hidden>
+
+
+                    <label class="col-sm-3 col-form-label" for="DepartmentNameUpdate">Name</label>
+                    <div class="col-sm-9 mb-3">
+                        <input type="text" class="form-control" id="DepartmentNameUpdate" required="">
+                        <div class="invalid-feedback">Please Provide Name </div>
+                    </div>
+
+
+                    <label class="col-sm-3 col-form-label" for="DepartmentDescriptionUpdate">Description</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="DepartmentDescriptionUpdate" required="">
+                        <div class="invalid-feedback">Please Provide Description </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="UpdateDepartmentSubmit">Update</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Model For Delete Department-->
+<div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="delete-department-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Confirm Delete</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="lh-lg mb-0" id="deleteDepartmentMessage"> </p>
+                <input type="text" class="form-control" id="DepartmentDeleteId" hidden>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="ConfirmDeleteDepartment();">Delete</button>
+                <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script src="~/js/department.js"></script>
+}
+
+

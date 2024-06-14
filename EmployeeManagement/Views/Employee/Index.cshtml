@@ -1,0 +1,208 @@
+﻿@using EmployeeManagement.Shared.ViewModels.Department
+@model List<DepartmentViewModel>
+
+
+<div class="container-fluid parent card shadow mt-3">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="heading">Employees</h2>
+            <button type="button" class="btn btn-primary" onclick="OpenAddEmployeeModal();">
+                <i class="fas fa-plus"></i> Add Employee
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table id="employeeTable" class="display" style="min-width:1230px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department Name</th>
+                        <th>Hire Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Model For Delete Employee-->
+<div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="delete-employee-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Confirm Delete</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class=" lh-lg mb-0" id="deleteEmployeeMessage"> </p>
+                <input type="text" class="form-control" id="EmployeeDeleteId" hidden>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="ConfirmDeleteEmployee();">Delete</button>
+                <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal For Add Employee -->
+<form id="addEmployeeForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="add-employee-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Add New Employee</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeFirstNameAdd">First Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="EmployeeFirstNameAdd" required>
+                        <div class="invalid-feedback">Please Provide First Name </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeLastNameAdd">Last Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="EmployeeLastNameAdd" required>
+                        <div class="invalid-feedback">Please Provide Last Name </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeEmailAdd">Email</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="email" class="form-control" id="EmployeeEmailAdd" required>
+                        <div class="invalid-feedback">Please Provide Valid Email </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeePhoneAdd">Phone</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" pattern="\d{8,12}" id="EmployeePhoneAdd" required>
+                        <div class="invalid-feedback">Please Provide Valid Phone No Between 8 To 12 Digits </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeDepartmentAdd">Department</label>
+                    <div class="col-sm-9 mb-2">
+                        <select class="form-select form-control" id="EmployeeDepartmentAdd" required="">
+                            <option selected="" disabled="" value="">Select Department </option>
+                            @foreach (var department in Model)
+                            {
+                                <option value=@department.Id>@department.Name</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please Select Department</div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeHireDateAdd">Hire Date</label>
+                    <div class="col-sm-9 mb-2">
+                        <input class="form-control" id="EmployeeHireDateAdd" type="date" required />
+                        <div class="invalid-feedback">Please Provide Hire Date </div>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="AddEmployeeSubmit">Submit</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!--  Modal For Update Employee-->
+<form id="updateEmployeeForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="update-employee-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Update Employee</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+                    <input type="text" class="form-control" id="EmployeeUpdateId" hidden>
+
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeFirstNameUpdate">First Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="EmployeeFirstNameUpdate" required>
+                        <div class="invalid-feedback">Please Provide First Name </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeLastNameUpdate">Last Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="EmployeeLastNameUpdate" required>
+                        <div class="invalid-feedback">Please Provide Last Name </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeEmailUpdate">Email</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="email" class="form-control" id="EmployeeEmailUpdate" required>
+                        <div class="invalid-feedback">Please Provide Valid Email </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeePhoneUpdate">Phone</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="EmployeePhoneUpdate" pattern="\d{8,12}" required>
+                        <div class="invalid-feedback">Please Provide Valid Phone No Between 8 To 12 Digits  </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeDepartmentUpdate">Department</label>
+                    <div class="col-sm-9 mb-2">
+                        <select class="form-select form-control" id="EmployeeDepartmentUpdate" required="">
+                            <option selected="" disabled="" value="">Select Department </option>
+                            @foreach (var department in Model)
+                            {
+                                <option value=@department.Id>@department.Name</option>
+                            }
+                        </select>
+
+                        <div class="invalid-feedback">Please Select Department</div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="EmployeeHireDateUpdate">Hire Date</label>
+                    <div class="col-sm-9 mb-2">
+                        <input class="form-control" id="EmployeeHireDateUpdate" type="date" required />
+                        <div class="invalid-feedback">Please Provide Hire Date </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit" id="UpdateEmployeeSubmit">Update</button>
+                        <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script src="~/js/employee.js"></script>
+}
+
+

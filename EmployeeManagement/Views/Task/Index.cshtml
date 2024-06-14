@@ -1,0 +1,199 @@
+﻿@using EmployeeManagement.Shared.ViewModels.Employee
+@model List<EmployeeViewModel>
+
+
+<div class="container-fluid parent card shadow mt-3">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="heading">Tasks</h2>
+            <button type="button" class="btn btn-primary" onclick="OpenAddTasksModal();">
+                <i class="fas fa-plus"></i> Add Tasks
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table id="taskTable" class="display" style="min-width:1130px;">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Title</th>
+                        <th>Due Date</th>
+                        <th>Employee Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal For Add Task -->
+<form id="addTaskForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="add-task-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Add New Task</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+
+                    <label class="col-sm-3 col-form-label" for="TaskNameAdd">Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskNameAdd" required>
+                        <div class="invalid-feedback">Please Provide Name </div>
+                    </div>
+
+
+                    <label class="col-sm-3 col-form-label" for="TaskDescriptionAdd">Description</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskDescriptionAdd" required>
+                        <div class="invalid-feedback">Please Provide Description </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskTitleAdd">Title</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskTitleAdd" required>
+                        <div class="invalid-feedback">Please Provide Title </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskEmployeeIdAdd">Employee</label>
+                    <div class="col-sm-9 mb-2">
+                        <select class="form-select form-control" id="TaskEmployeeIdAdd" required="">
+                            <option selected="" disabled="" value="">Select Employee </option>
+                            @if (Model != null)
+                            {
+                                @foreach (var employee in Model)
+                                {
+                                    <option value=@employee.Id>@employee.FirstName @employee.LastName</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please Select Employee</div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskDueDateAdd">Due Date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" id="TaskDueDateAdd" required>
+                        <div class="invalid-feedback">Please Provide Due Date </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="AddTaskSubmit">Submit</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!--  Modal For Update Task-->
+<form id="updateTaskForm" class="row needs-validation" novalidate="">
+    <div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="update-task-modal">
+        <div class="modal-dialog modal-dialog-centered" data-bs-backdrop="static">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Update Task</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body row px-5 pt-4" style="row-gap: 0.4em;">
+                    <input type="text" class="form-control" id="TaskUpdateId" hidden>
+
+
+                    <label class="col-sm-3 col-form-label" for="TaskNameUpdate">Name</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskNameUpdate" required>
+                        <div class="invalid-feedback">Please Provide Name </div>
+                    </div>
+
+
+                    <label class="col-sm-3 col-form-label" for="TaskDescriptionUpdate">Description</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskDescriptionUpdate" required>
+                        <div class="invalid-feedback">Please Provide Description </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskTitleUpdate">Title</label>
+                    <div class="col-sm-9 mb-2">
+                        <input type="text" class="form-control" id="TaskTitleUpdate" required>
+                        <div class="invalid-feedback">Please Provide Title </div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskEmployeeIdUpdate">Employee</label>
+                    <div class="col-sm-9 mb-2">
+                        <select class="form-select form-control" id="TaskEmployeeIdUpdate" required="">
+                            <option selected="" disabled="" value="">Select Employee </option>
+                            @if (Model != null)
+                            {
+                                @foreach (var employee in Model)
+                                {
+                                    <option value=@employee.Id>@employee.FirstName @employee.LastName</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please Select Employee</div>
+                    </div>
+
+                    <label class="col-sm-3 col-form-label" for="TaskDueDateUpdate">Due Date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" id="TaskDueDateUpdate" required>
+                        <div class="invalid-feedback">Please Provide Due Date </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="UpdateTaskSubmit">Update</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Model For Delete Task-->
+<div class="modal fade" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" id="delete-task-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" id="staticBackdropLabel">Confirm Delete</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class=" lh-lg mb-0" id="deleteTaskMessage"> </p>
+                <input type="text" class="form-control" id="TaskDeleteId" hidden>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="ConfirmDeleteTask();">Delete</button>
+                <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script src="~/js/task.js"></script>
+}
+
+
